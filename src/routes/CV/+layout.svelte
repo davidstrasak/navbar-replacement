@@ -4,7 +4,7 @@
     // const base = "";
 	import { afterUpdate, onMount } from "svelte";
 	// import info from "./(portfolio)/projects/info";
-	import { page } from "$app/stores";
+	import { page } from "$app/state";
 
 	// BLOCK 1 - Scroll to top button listener
 	let scrollY = 0;
@@ -121,22 +121,19 @@
 	style="height: {entireHeight};"
 >
 	<header
-		class="fixed md:pt-10 pb-5 w-full md:w-4/5 lg:w-3/5 z-10 font-bold md:bg-base-100 font-systemancer"
+		class="fixed md:pt-10 pb-5 w-full md:w-4/5 lg:w-3/5 z-10 md:bg-base-100 font-systemancer"
 		bind:this={headerObject}
 	>
 		<div class="flex flex-col md:flex-row justify-between items-left">
-			<!-- Name -->
-
 			<div class="bg-base-100">
 				<div class="flex items-center flex-row pl-2">
 					<button class="btn btn-ghost btn-lg text-3xl inline ">
-						{#key $page.url.pathname}
+						{#key page.url.pathname}
 							<a href={`${base}/`} class=" inline">
 								<div class={typewriter}>SYSTEMANCER</div>
 							</a>
 						{/key}
 					</button>
-					<!-- <input type="checkbox" value="breeze" class="toggle theme-controller" /> -->
 					<button
 						class="btn btn-lg btn-ghost inline {fadeIn} {buttonInvis}"
 						on:click={() => {
@@ -162,8 +159,26 @@
 				</div>
 			</div>
 
+			<div class="hidden md:flex space-x-4">
+				<button class="btn btn-ghost btn-lg text-2xl">
+					{#key page.url.pathname}
+						<a href={`${base}/blog`}> Blog </a>
+					{/key}
+				</button>
+				<button class="btn btn-ghost btn-lg text-2xl">
+					{#key page.url.pathname}
+						<a href={`${base}/projects`} > Projects </a>
+					{/key}
+				</button>
+				<button class="btn btn-ghost btn-lg text-2xl no-animation">
+					{#key page.url.pathname}
+						<a href={`${base}/CV`} > CV </a>
+					{/key}
+				</button>
+			</div>
+
 			<!-- Rest of the navbar -->
-			<nav class="md:items-left fade-in bg-base-100 {setInvis}">
+			<!-- <nav class="md:items-left fade-in bg-base-100 {setInvis}">
 				<ul class="flex flex-col md:flex-row space-x-0 md:space-x-10 md:space-y-0 items-left">
 					<li>
 						<button class="btn btn-ghost btn-lg text-3xl">
@@ -187,7 +202,7 @@
 						</button>
 					</li>
 				</ul>
-			</nav>
+			</nav> -->
 		</div>
 	</header>
 

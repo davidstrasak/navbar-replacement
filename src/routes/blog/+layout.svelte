@@ -3,61 +3,102 @@
 	import { onMount } from 'svelte';
 	import { fly } from 'svelte/transition';
 	import { base } from "$app/paths";
-  
+	import { page } from "$app/state";
+
 	let isOpen = false;
 	let y:number;
+	let fadeIn: string = "fade-in"; // This holds the "fade-in" class for the button
   
 	function toggleMenu() {
 	  isOpen = !isOpen;
 	}
-  
+
+	//BLOCK 5 - Typewriter effect for the name
+	let typewriter: string;
+	typewriter = "typewriter";
 	onMount(() => {
-	  const mediaQuery = window.matchMedia('(min-width: 768px)');
-	  const handleMediaQueryChange = (e: MediaQueryListEvent) => {
-		if (e.matches) {
-		  isOpen = false;
-		}
-	  };
-	  mediaQuery.addListener(handleMediaQueryChange);
-	  return () => mediaQuery.removeListener(handleMediaQueryChange);
+		setTimeout(() => {
+			typewriter = "vanillaTypewriter";
+		}, 2000);
+
+		setTimeout(() => {
+			// This removes the fade-in class from the button after 2 seconds, because otherwise it would fade on click
+			fadeIn = "";
+		}, 2000);
 	});
   </script>
   
   <svelte:window bind:scrollY={y}/>
   
-  <div class="min-h-screen bg-gray-900 text-gray-100 font-systemancer">
-	<header class="fixed top-0 left-0 right-0 z-50 bg-gray-800 shadow-md transition-all duration-300" class:shadow-lg={y > 0}>
+  <div class="min-h-screen font-primary">
+	<header class="fixed top-0 left-0 right-0 z-50 bg-base-100 shadow-md transition-all duration-300 font-systemancer" class:shadow-lg={y > 0}>
 	  <nav class="container mx-auto px-4 py-4">
 		<div class="mx-auto w-full md:w-4/5 lg:w-3/5 flex justify-between items-center">
-		  <a href="/" class="text-2xl font-bold text-blue-400">SYSTEMANCER</a>
+			<button class="btn btn-ghost text-2xl lg:btn-lg lg:text-3xl inline ">
+				{#key page.url.pathname}
+					<a href={`${base}/`} class="inline">
+						<div class={typewriter}>SYSTEMANCER</div>
+					</a>
+				{/key}
+			</button>
+
 		  
-		  <div class="hidden md:flex space-x-4">
-			<a href="/blog" class="text-gray-300 hover:text-blue-400">Blog</a>
-			<a href="/project" class="text-gray-300 hover:text-blue-400">Project</a>
-			<a href="/CV" class="text-gray-300 hover:text-blue-400">CV</a>
+		  <div class="hidden md:flex space-x-4 {fadeIn}">
+				{#key page.url.pathname}
+					<a href={`${base}/blog`} class="btn btn-ghost xl:btn-lg text-xl xl:text-2xl"> Blog </a>
+				{/key}
+				{#key page.url.pathname}
+					<a href={`${base}/projects`} class="btn btn-ghost xl:btn-lg text-xl xl:text-2xl"> Projects </a>
+				{/key}
+				{#key page.url.pathname}
+					<a href={`${base}/CV`}  class="btn btn-ghost xl:btn-lg text-xl xl:text-2xl"> CV </a>
+				{/key}
 		  </div>
 		  
-		  <button class="md:hidden text-gray-300" on:click={toggleMenu} aria-label="Toggle menu">
-			<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-			  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-			</svg>
-		  </button>
+		  <button
+						class="inline {fadeIn} md:hidden"
+						on:click={() => {
+							toggleMenu();
+						}}
+						aria-label="Toggle navigation menu"
+						><svg
+							fill="#00ff00"
+							clip-rule="evenodd"
+							fill-rule="evenodd"
+							stroke-linejoin="round"
+							stroke-miterlimit="2"
+							viewBox="0 0 24 24"
+							xmlns="http://www.w3.org/2000/svg"
+							height="50"
+							width="50"
+							><path
+								d="m21 17.75c0-.414-.336-.75-.75-.75h-16.5c-.414 0-.75.336-.75.75s.336.75.75.75h16.5c.414 0 .75-.336.75-.75zm0-4c0-.414-.336-.75-.75-.75h-16.5c-.414 0-.75.336-.75.75s.336.75.75.75h16.5c.414 0 .75-.336.75-.75zm0-4c0-.414-.336-.75-.75-.75h-16.5c-.414 0-.75.336-.75.75s.336.75.75.75h16.5c.414 0 .75-.336.75-.75zm0-4c0-.414-.336-.75-.75-.75h-16.5c-.414 0-.75.336-.75.75s.336.75.75.75h16.5c.414 0 .75-.336.75-.75z"
+								fill-rule="nonzero"
+							/></svg
+						></button
+					>
 		</div>
 	  </nav>
 	  
 	  {#if isOpen}
 		<div class="md:hidden" transition:fly="{{ y: -200, duration: 300 }}">
 		  <div class="mx-auto w-full md:w-4/5 lg:w-3/5">
-			<a href="/blog" class="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-700">Blog</a>
-			<a href="/project" class="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-700">Project</a>
-			<a href="/CV" class="block py-2 px-4 text-sm text-gray-300 hover:bg-gray-700">CV</a>
+				{#key page.url.pathname}
+					<a href={`${base}/blog`} class="block py-2 px-4 text-sm hover:bg-gray-700 w-full text-left"> Blog </a>
+				{/key}
+				{#key page.url.pathname}
+					<a href={`${base}/projects`} class="block py-2 px-4 text-sm hover:bg-gray-700 w-full text-left" > Projects </a>
+				{/key}
+				{#key page.url.pathname}
+					<a href={`${base}/CV`} class="block py-2 px-4 text-sm hover:bg-gray-700 w-full text-left"> CV </a>
+				{/key}
 		  </div>
 		</div>
 	  {/if}
 	</header>
   
-	<main class="container mx-auto px-4 pt-24 font-primary">
-	  <div class="mx-auto w-full md:w-4/5 lg:w-3/5 bg-gray-800 p-6 rounded-lg shadow-lg">
+	<main class="container mx-auto px-4 pt-20 lg:pt-24 font-primary fade-in">
+	  <div class="mx-auto w-full md:w-4/5 lg:w-3/5 bg-base-100 p-6 shadow-lg">
 		<slot />
 	  </div>
 	</main>

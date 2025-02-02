@@ -1,3 +1,82 @@
-@import 'tailwindcss/base';
-@import 'tailwindcss/components';
-@import 'tailwindcss/utilities'
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Scrollbar */
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  background: #0a100d;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: greenyellow;
+  border-radius: 5px;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #fff000;
+}
+
+/* Initial animations */
+
+@layer components {
+  .typewriter {
+    overflow: hidden;
+    border-right: 0.15em solid #00ff00;
+    white-space: nowrap;
+    margin: 0 auto;
+    letter-spacing: 0.15em;
+    animation: typing 1s steps(40, end);
+  }
+
+  @keyframes typing {
+    from {
+      width: 0;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
+  @keyframes blink-caret {
+    from,
+    to {
+      border-color: transparent;
+    }
+    50% {
+      border-color: #00ff00;
+    }
+  }
+}
+
+.vanillaTypewriter {
+  overflow: hidden;
+  border-right: 0.15em solid #00ff00;
+  white-space: nowrap;
+  margin: 0 auto;
+  letter-spacing: 0.15em;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+.fade-in {
+  opacity: 0;
+  animation: fadeIn 1s;
+  animation-delay: 1s;
+  animation-fill-mode: forwards;
+}
+
+p {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
